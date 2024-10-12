@@ -170,6 +170,7 @@
         const retailGet = new RegExp("<SCALE id=\"23\">\n<SCORE>(.*)<\/SCORE>");
         const timberWoodchippingGet = new RegExp("<SCALE id=\"19\">\n<SCORE>(.*)<\/SCORE>");
         const troutFishingGet = new RegExp("<SCALE id=\"15\">\n<SCORE>(.*)<\/SCORE>");
+        const agricultureGet = new RegExp("<SCALE id=\"17\">\n<SCORE>(.*)<\/SCORE>");
 
         //Modifier stats
         const sciAdvGet = new RegExp("<SCALE id=\"70\">\n<SCORE>(.*)<\/SCORE>");
@@ -189,10 +190,11 @@
         let retail = parseInt(industryInfo.match(retailGet)[1])
         let timberWoodchipping = parseInt(industryInfo.match(timberWoodchippingGet)[1])
         let troutFishing = parseInt(industryInfo.match(troutFishingGet)[1])
+        let agriculture = parseInt(industryInfo.match(agricultureGet)[1])
 
         let sciAdv = parseInt(industryInfo.match(sciAdvGet)[1])
 
-        let totalIndustrialOutput = (armsManufacturing + automobileManufacturing + basketWeaving + beverageSales + bookPublishing + cheeseExports + furnitureRestoration + gambling + informationTechnology + insurance + mining + pizzaDelivery + retail + timberWoodchipping + troutFishing)
+        let totalIndustrialOutput = (armsManufacturing + automobileManufacturing + basketWeaving + beverageSales + bookPublishing + cheeseExports + furnitureRestoration + gambling + informationTechnology + insurance + mining + pizzaDelivery + retail + timberWoodchipping + troutFishing + agriculture)
         //console.log(totalIndustrialOutput)
 
         let armsManufacturingPercentage = parseFloat(((armsManufacturing/totalIndustrialOutput)*100).toFixed(1));
@@ -210,6 +212,7 @@
         let retailPercentage = parseFloat(((retail / totalIndustrialOutput) * 100).toFixed(1))
         let timberWoodchippingPercentage = parseFloat(((timberWoodchipping / totalIndustrialOutput) * 100).toFixed(1));
         let troutFishingPercentage = parseFloat(((troutFishing / totalIndustrialOutput) * 100).toFixed(1));
+        let agriculturePercentage = parseFloat(((agriculture / totalIndustrialOutput) * 100).toFixed(1));
 
         //Chart images
         //So that we can change them based on different circumstances
@@ -229,6 +232,7 @@
         let retail_banner = "/images/banners/y236.jpg"
         let timberWoodchipping_banner = "/images/banners/i30.jpg"
         let troutFishing_banner = "/images/banners/i23.jpg"
+        let agriculture_banner = "/images/banners/y54.jpg"
 
         console.log(parseInt(sciAdv))
         console.log(sciAdv)
@@ -248,6 +252,7 @@
             retail_banner = "/images/banners/t38.jpg"
             timberWoodchipping_banner = "/images/banners/y184.jpg"
             troutFishing_banner = "/images/banners/d5.jpg"
+            agriculture_banner = "/images/banners/a3.jpg"
         }
 
 
@@ -280,6 +285,7 @@
         const sectorObj_retail = new industrialSector('Retail', retail_banner, retailPercentage);
         const sectorObj_timberWoodchipping = new industrialSector('Timber Woodchipping', timberWoodchipping_banner, timberWoodchippingPercentage);
         const sectorObj_troutFishing = new industrialSector('Trout Fishing', troutFishing_banner, troutFishingPercentage);
+        const sectorObj_agriculture = new industrialSector('Agriculture', agriculture_banner, agriculturePercentage);
 
         if(armsManufacturingPercentage > 0){
             testSeries.push(JSON.parse(JSON.stringify(sectorObj_armsManufacturing)));
@@ -342,6 +348,10 @@
             testSeries.push(JSON.parse(JSON.stringify(sectorObj_troutFishing)));
         }
 
+        if(agriculturePercentage > 0){
+            testSeries.push(JSON.parse(JSON.stringify(sectorObj_agriculture)));
+        }
+
         //console.log(testSeries);
         const chartText = "Total industrial output: <b>"+ totalIndustrialOutput.toLocaleString() + " production units</b>";
 
@@ -356,7 +366,7 @@
 
     //API stuff
     async function getIndustryData(nationName, username) {
-            const url = "https://www.nationstates.net/cgi-bin/api.cgi?nation=" + nationName.replaceAll(" ", "_") + ";q=census;scale=16+10+12+18+24+11+22+25+13+21+20+14+23+19+15+70" + "&script=Economic_Iguana_v1.0_developedBy_Mechanocracy_andusedBy_" + username;
+            const url = "https://www.nationstates.net/cgi-bin/api.cgi?nation=" + nationName.replaceAll(" ", "_") + ";q=census;scale=16+10+12+18+24+11+22+25+13+21+20+14+23+19+15+17+70" + "&script=Economic_Iguana_v1.0_developedBy_Mechanocracy_andusedBy_" + username;
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
